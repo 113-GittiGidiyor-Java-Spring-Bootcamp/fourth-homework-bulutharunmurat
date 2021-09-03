@@ -1,0 +1,124 @@
+package dev.patika.util;
+
+
+import dev.patika.datatransferobject.CourseDTO;
+import dev.patika.datatransferobject.InstructorDTO;
+import dev.patika.datatransferobject.PermanentInstructorDTO;
+import dev.patika.datatransferobject.StudentDTO;
+import dev.patika.entity.*;
+import dev.patika.entity.Course;
+import dev.patika.entity.Student;
+import dev.patika.mappers.CourseMapper;
+import dev.patika.mappers.InstructorMapper;
+import dev.patika.mappers.StudentMapper;
+import dev.patika.service.CourseService;
+import dev.patika.service.InstructorService;
+import dev.patika.service.StudentService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.HashSet;
+import java.util.Set;
+
+
+@Component
+public class InitializerRunner implements CommandLineRunner {
+
+    private static final Logger logger = LoggerFactory.getLogger(InitializerRunner.class);
+
+
+    @Autowired
+    StudentMapper studentMapper;
+
+    @Autowired
+    CourseMapper courseMapper;
+
+    @Autowired
+    InstructorMapper instructorMapper;
+
+    @Autowired
+    StudentService studentService;
+
+    @Autowired
+    CourseService courseService;
+
+    @Autowired
+    InstructorService instructorService;
+
+    @Override
+    public void run(String... args) throws Exception {
+
+
+        StudentDTO student1 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
+                .name("Harun Murat")
+                .address("Istanbul")
+                .birthDate(LocalDate.of(2001, Month.AUGUST,18))
+                .gender("male")
+                .build());
+
+        StudentDTO student2 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
+                .name("Bulut")
+                .address("Bursa")
+                .birthDate( LocalDate.of(1994, Month.MAY,04))
+                .gender("male")
+                .build());
+
+
+        studentService.save(student1);
+        studentService.save(student2);
+
+
+//        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
+//            PermanentInstructor.builder()
+//                    .name("Tolga Ovatman")
+//                    .address("Istanbul")
+//                    .phoneNumber("00212220")
+//                    .fixedSalary(50.00F)));
+//
+//        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
+//                VisitingResearcher.builder()
+//                        .name("Tacettin")
+//                        .address("Istanbul")
+//                        .phoneNumber("051231")
+//                        .hourlySalary(40.00F)));
+
+        CourseDTO course1 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
+                .code("CAL101")
+                .creditScore(3.50F)
+                .name("CALCULUS")
+                .build());
+
+        CourseDTO course2 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
+                .code("CS101")
+                .creditScore(4.0F)
+                .name("COMPUTER SCIENCE")
+                .build());
+
+        CourseDTO course3 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
+                .code("ENG101")
+                .creditScore(2.0F)
+                .name("ENGLISH")
+                .build());
+
+        courseService.save(course1);
+        courseService.save(course2);
+        courseService.save(course3);
+
+//        Set<Student> studentList = new HashSet<>();
+//        studentList.add(student1);
+//
+//        Set<Course> courses = new HashSet<>();
+//        courses.add(course1);
+//
+//        course1.setStudentList(studentList);
+//        student1.setCourseList(courses);
+
+        courseService.findAll().forEach(course -> logger.info("{}", course));
+
+    }
+}
