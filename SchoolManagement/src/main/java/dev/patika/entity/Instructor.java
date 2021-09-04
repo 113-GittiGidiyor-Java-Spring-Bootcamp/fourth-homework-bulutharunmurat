@@ -2,6 +2,7 @@ package dev.patika.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.AllArgsConstructor;
@@ -25,7 +26,7 @@ import java.util.List;
         @JsonSubTypes.Type(value = PermanentInstructor.class, name = "PermanentInstructor"),
         @JsonSubTypes.Type(value = VisitingResearcher.class, name = "VisitingResearcher")
 })
-public class Instructor {
+public class Instructor{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -34,6 +35,14 @@ public class Instructor {
     private String address;
     private String phoneNumber;
 
+    public Instructor(String name, String address, String phoneNumber, List<Course> courseList) {
+        this.name = name;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.courseList = courseList;
+    }
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "instructor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Course> courseList = new ArrayList<>();

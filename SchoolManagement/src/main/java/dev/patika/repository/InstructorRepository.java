@@ -19,4 +19,16 @@ public interface InstructorRepository extends CrudRepository<Instructor, Integer
             "ORDER BY SALARY DESC")
     List<Instructor> getThreeMostEarningInstructor();
 
+    @Query("SELECT " +
+            "  CASE " +
+            "   WHEN " +
+            "       COUNT(i)>0 " +
+            "   THEN " +
+            "       TRUE " +
+            "   ELSE " +
+            "       FALSE " +
+            "   END " +
+            "FROM Instructor i " +
+            "WHERE i.phoneNumber = ?1")
+    boolean selectExistsPhoneNumber(String phoneNumber);
 }

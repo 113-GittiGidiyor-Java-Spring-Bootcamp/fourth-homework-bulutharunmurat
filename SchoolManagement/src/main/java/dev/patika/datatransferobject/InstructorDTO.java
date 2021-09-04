@@ -27,7 +27,4 @@ public class InstructorDTO {
     @NotBlank
     private String phoneNumber;
 
-    @ApiModelProperty(example = "5500.00")
-    @NotNull
-    private Float fixedSalary;
 }

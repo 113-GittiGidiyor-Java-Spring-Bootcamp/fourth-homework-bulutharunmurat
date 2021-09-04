@@ -7,6 +7,8 @@ import dev.patika.datatransferobject.VisitingResearcherDTO;
 import dev.patika.entity.Instructor;
 import dev.patika.entity.PermanentInstructor;
 import dev.patika.entity.VisitingResearcher;
+import dev.patika.exceptions.CourseIsAlreadyExistException;
+import dev.patika.exceptions.InstructorIsAlreadyExistException;
 import dev.patika.mappers.InstructorMapper;
 import dev.patika.mappers.PermanentInstructorMapper;
 import dev.patika.mappers.VisitingResearcherMapper;
@@ -86,11 +88,19 @@ public class InstructorService implements BaseService<Instructor>{
     }
 
     public Instructor saveVisitingResearcher(VisitingResearcherDTO visitingResearcherDTO) {
+        boolean isExist = repository.selectExistsPhoneNumber(visitingResearcherDTO.getPhoneNumber());
+        if(isExist){
+            throw new InstructorIsAlreadyExistException("Instructor with Phone Number : " + visitingResearcherDTO.getPhoneNumber() + " is already exists!");
+        }
         VisitingResearcher visitingResearcher = visitingResearcherMapper.mapFromVisitingResearcherDTOtoVisitingResearcher(visitingResearcherDTO);
         return repository.save(visitingResearcher);
     }
 
     public Instructor savePermanentInstructor(PermanentInstructorDTO permanentInstructorDTO) {
+        boolean isExist = repository.selectExistsPhoneNumber(permanentInstructorDTO.getPhoneNumber());
+        if(isExist){
+            throw new InstructorIsAlreadyExistException("Instructor with Phone Number : " + permanentInstructorDTO.getPhoneNumber() + " is already exists!");
+        }
         PermanentInstructor permanentInstructor = permanentInstructorMapper.mapFromPermanentInstructorDTOtoPermanentInstructor(permanentInstructorDTO);
         return repository.save(permanentInstructor);
     }

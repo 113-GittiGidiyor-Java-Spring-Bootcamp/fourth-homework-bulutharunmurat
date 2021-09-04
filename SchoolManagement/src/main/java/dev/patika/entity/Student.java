@@ -1,5 +1,6 @@
 package dev.patika.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +21,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity //Spring DATA JPA
 @Builder
-public class Student {
+public class Student extends AbstractBaseEntity{
 
     @Id//for persistence context - primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,6 +32,7 @@ public class Student {
     private String gender;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<Course> courseList;
 
 }

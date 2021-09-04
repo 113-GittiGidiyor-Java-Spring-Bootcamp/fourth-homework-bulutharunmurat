@@ -28,4 +28,8 @@ public class CourseDTO {
     @ApiModelProperty(example = "5.5")
     @NotNull
     private Float creditScore;
+
+    @ApiModelProperty(example = "1")
+    @NotNull(message = "Course ID is mandatory")
+    private int instructorId;
 }
