@@ -47,4 +47,8 @@ public class Instructor{
     @JsonIgnore
     private List<Course> courseList = new ArrayList<>();
 
+    public void addCourse(Course course){
+        courseList.add(course);
+    }
+
 }

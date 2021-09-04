@@ -69,8 +69,6 @@ public class InitializerRunner implements CommandLineRunner {
                 .build());
 
 
-        studentService.save(student1);
-        studentService.save(student2);
 
 
 //        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
@@ -109,14 +107,12 @@ public class InitializerRunner implements CommandLineRunner {
         courseService.save(course2);
         courseService.save(course3);
 
-//        Set<Student> studentList = new HashSet<>();
-//        studentList.add(student1);
-//
-//        Set<Course> courses = new HashSet<>();
-//        courses.add(course1);
-//
-//        course1.setStudentList(studentList);
-//        student1.setCourseList(courses);
+//        Student student1_ = studentMapper.mapFromStudentDTOtoStudent(student1);
+//        Course course1_ = courseMapper.mapFromCourseDTOtoCourse(course1);
+//        student1_.addCourse(course1_);
+
+        studentService.save(student1);
+        studentService.save(student2);
 
         courseService.findAll().forEach(course -> logger.info("{}", course));
 

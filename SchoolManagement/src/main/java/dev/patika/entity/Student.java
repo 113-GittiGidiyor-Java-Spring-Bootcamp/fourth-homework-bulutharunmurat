@@ -17,6 +17,7 @@ import java.util.Set;
 //@EqualsAndHashCode
 //@ToString
 @Data //-> @RequiredArgsConstructor, @Getter, @Setter, @EqualsAndHashCode, @ToString
+@Table(name = "Student")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity //Spring DATA JPA
@@ -31,8 +32,24 @@ public class Student extends AbstractBaseEntity{
     private LocalDate birthDate;
     private String gender;
 
+    public Student(String name, String address, LocalDate birthDate, String gender) {
+        this.name = name;
+        this.address = address;
+        this.birthDate = birthDate;
+        this.gender = gender;
+    }
+
+    public void addCourse(Course course){
+        courseList.add(course);
+    }
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JsonBackReference
+    @JoinTable(
+            name = "student_course",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "course_id")
+    )
+//    @JsonBackReference
     private Set<Course> courseList;
 
 }

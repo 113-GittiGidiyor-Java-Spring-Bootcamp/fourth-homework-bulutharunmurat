@@ -13,6 +13,7 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Data //-> @RequiredArgsConstructor, @Getter, @Setter, @EqualsAndHashCode, @ToString
+@Table(name = "Course")
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity //Spring DATA JPA
@@ -26,7 +27,17 @@ public class Course extends AbstractBaseEntity{
     private String code;
     private Float creditScore;
 
-    @JsonManagedReference
+    public Course(String name, String code, Float creditScore) {
+        this.name = name;
+        this.code = code;
+        this.creditScore = creditScore;
+    }
+
+    public void addStudent(Student student){
+        studentList.add(student);
+    }
+
+//    @JsonManagedReference
     @ManyToMany(mappedBy = "courseList", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Student> studentList;
 

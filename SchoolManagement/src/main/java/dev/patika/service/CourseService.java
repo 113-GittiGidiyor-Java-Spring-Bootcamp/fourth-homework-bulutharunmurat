@@ -3,15 +3,23 @@ package dev.patika.service;
 
 import dev.patika.datatransferobject.CourseDTO;
 import dev.patika.entity.Course;
+import dev.patika.entity.Log;
+import dev.patika.repository.LogRepository;
+import dev.patika.service.LogService;
 import dev.patika.exceptions.CourseIsAlreadyExistException;
 import dev.patika.mappers.CourseMapper;
 import dev.patika.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
+
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +27,9 @@ public class CourseService implements BaseService<Course> {
 
     private final CourseRepository repository;
     private final CourseMapper courseMapper;
+    private final LogRepository logRepository;
+
+    Logger logger = LoggerFactory.getLogger(CourseService.class);
 
     @Override
     @Transactional(readOnly = true)
@@ -41,6 +52,15 @@ public class CourseService implements BaseService<Course> {
     public Course save(CourseDTO courseDTO) {
         boolean isExist = repository.selectExistsCode(courseDTO.getCode());
         if(isExist){
+            logger.info("error saving course");
+            Log log = new Log(System.currentTimeMillis(),"Course with Code : " + courseDTO.getCode() +
+                    " is already exists!", "course error");
+//            Log log = Log.builder()
+//                    .message("Course with Code : " + courseDTO.getCode() + " is already exists!")
+//                            .localDate(System.currentTimeMillis())
+//                                    .errorType("course error")
+//                                            .build();
+            logRepository.save(log);
             throw new CourseIsAlreadyExistException("Course with Code : " + courseDTO.getCode() + " is already exists!");
         }
         Course course = courseMapper.mapFromCourseDTOtoCourse(courseDTO);
