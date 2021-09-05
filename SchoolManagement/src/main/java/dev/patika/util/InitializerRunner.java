@@ -53,6 +53,9 @@ public class InitializerRunner implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        courseService.deleteAll();
+        studentService.deleteAll();
+        instructorService.deleteAll();
 
         StudentDTO student1 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
                 .name("Harun Murat")
@@ -103,9 +106,7 @@ public class InitializerRunner implements CommandLineRunner {
                 .name("ENGLISH")
                 .build());
 
-        courseService.save(course1);
-        courseService.save(course2);
-        courseService.save(course3);
+
 
 //        Student student1_ = studentMapper.mapFromStudentDTOtoStudent(student1);
 //        Course course1_ = courseMapper.mapFromCourseDTOtoCourse(course1);
@@ -113,6 +114,10 @@ public class InitializerRunner implements CommandLineRunner {
 
         studentService.save(student1);
         studentService.save(student2);
+
+        courseService.save(course1);
+        courseService.save(course2);
+        courseService.save(course3);
 
         courseService.findAll().forEach(course -> logger.info("{}", course));
 

@@ -32,4 +32,7 @@ public class CourseDTO {
     @ApiModelProperty(example = "1")
     @NotNull(message = "Course ID is mandatory")
     private int instructorId;
+
+    //instructur id
+    //list
 }

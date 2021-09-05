@@ -3,12 +3,14 @@ package dev.patika.service;
 
 
 import dev.patika.datatransferobject.StudentDTO;
+import dev.patika.entity.Instructor;
 import dev.patika.entity.Student;
 import dev.patika.exceptions.CourseIsAlreadyExistException;
 import dev.patika.exceptions.StudentAgeNotValidException;
 import dev.patika.mappers.StudentMapper;
 import dev.patika.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,8 @@ public class StudentService implements BaseService<Student> {
 
     private final StudentRepository repository;
     private final StudentMapper studentMapper;
+    public static Logger logger = Logger.getLogger(StudentService.class);
+
 
     @Override
     @Transactional(readOnly = true)
@@ -48,6 +52,10 @@ public class StudentService implements BaseService<Student> {
         int age = currentYear - studentDTO.getBirthDate().getYear();
 
         if(age < 18 || age > 40){
+
+            //CREATE LOG AND SAVE TO DATABASE LOGS TABLE WITH LOG4J
+            logger.info("Student Age should be between 18 and 40!");
+
             throw new StudentAgeNotValidException("Student Age should be between 18 and 40!");
         }
         Student student = studentMapper.mapFromStudentDTOtoStudent(studentDTO);
@@ -91,4 +99,10 @@ public class StudentService implements BaseService<Student> {
     public void deleteByName(String name){
         repository.deleteByName(name);
     }
+
+    @Transactional
+    public void deleteAll(){
+        repository.deleteAll();
+    }
+
 }

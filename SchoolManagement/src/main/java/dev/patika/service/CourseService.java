@@ -11,12 +11,16 @@ import dev.patika.mappers.CourseMapper;
 import dev.patika.repository.CourseRepository;
 import lombok.RequiredArgsConstructor;
 
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.PropertyConfigurator;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+//import org.apache.logging.log4j.Logger;
+import org.apache.log4j.Logger;
+
+//import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +33,7 @@ public class CourseService implements BaseService<Course> {
     private final CourseMapper courseMapper;
     private final LogRepository logRepository;
 
-    Logger logger = LoggerFactory.getLogger(CourseService.class);
+    private static Logger logger = Logger.getLogger(CourseService.class);
 
     @Override
     @Transactional(readOnly = true)
@@ -52,15 +56,19 @@ public class CourseService implements BaseService<Course> {
     public Course save(CourseDTO courseDTO) {
         boolean isExist = repository.selectExistsCode(courseDTO.getCode());
         if(isExist){
-            logger.info("error saving course");
+
+
+            //CREATE LOG AND SAVE TO DATABASE LOGS TABLE WITH LOG4J
+            logger.info("Course with Code : " + courseDTO.getCode() + " is already exists!");
+
+            /*
+            MANUEL MAPPING OPTION
+
             Log log = new Log(System.currentTimeMillis(),"Course with Code : " + courseDTO.getCode() +
                     " is already exists!", "course error");
-//            Log log = Log.builder()
-//                    .message("Course with Code : " + courseDTO.getCode() + " is already exists!")
-//                            .localDate(System.currentTimeMillis())
-//                                    .errorType("course error")
-//                                            .build();
             logRepository.save(log);
+            */
+
             throw new CourseIsAlreadyExistException("Course with Code : " + courseDTO.getCode() + " is already exists!");
         }
         Course course = courseMapper.mapFromCourseDTOtoCourse(courseDTO);
@@ -88,5 +96,10 @@ public class CourseService implements BaseService<Course> {
     @Transactional
     public void deleteByName(String name){
         repository.deleteByName(name);
+    }
+
+    @Transactional
+    public void deleteAll(){
+        repository.deleteAll();
     }
 }

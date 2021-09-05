@@ -14,6 +14,7 @@ import dev.patika.mappers.PermanentInstructorMapper;
 import dev.patika.mappers.VisitingResearcherMapper;
 import dev.patika.repository.InstructorRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ import java.util.List;
 public class InstructorService implements BaseService<Instructor>{
 
     private final InstructorRepository repository;
+    public static Logger logger = Logger.getLogger(InstructorService.class);
 
 
     private final InstructorMapper instructorMapper;
@@ -90,6 +92,10 @@ public class InstructorService implements BaseService<Instructor>{
     public Instructor saveVisitingResearcher(VisitingResearcherDTO visitingResearcherDTO) {
         boolean isExist = repository.selectExistsPhoneNumber(visitingResearcherDTO.getPhoneNumber());
         if(isExist){
+
+            //CREATE LOG AND SAVE TO DATABASE LOGS TABLE WITH LOG4J
+            logger.info("Instructor with Phone Number : " + visitingResearcherDTO.getPhoneNumber() + " is already exists!");
+           
             throw new InstructorIsAlreadyExistException("Instructor with Phone Number : " + visitingResearcherDTO.getPhoneNumber() + " is already exists!");
         }
         VisitingResearcher visitingResearcher = visitingResearcherMapper.mapFromVisitingResearcherDTOtoVisitingResearcher(visitingResearcherDTO);
@@ -99,9 +105,19 @@ public class InstructorService implements BaseService<Instructor>{
     public Instructor savePermanentInstructor(PermanentInstructorDTO permanentInstructorDTO) {
         boolean isExist = repository.selectExistsPhoneNumber(permanentInstructorDTO.getPhoneNumber());
         if(isExist){
+
+            //CREATE LOG AND SAVE TO DATABASE LOGS TABLE WITH LOG4J
+            logger.info("Instructor with Phone Number : " + permanentInstructorDTO.getPhoneNumber() + " is already exists!");
+
             throw new InstructorIsAlreadyExistException("Instructor with Phone Number : " + permanentInstructorDTO.getPhoneNumber() + " is already exists!");
         }
         PermanentInstructor permanentInstructor = permanentInstructorMapper.mapFromPermanentInstructorDTOtoPermanentInstructor(permanentInstructorDTO);
         return repository.save(permanentInstructor);
     }
+
+    @Transactional
+    public void deleteAll() {
+        repository.deleteAll();
+    }
+
 }
