@@ -52,59 +52,61 @@ public class InitializerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        courseService.deleteAll();
-        studentService.deleteAll();
-        instructorService.deleteAll();
-
-        StudentDTO student1 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
-                .name("Harun Murat")
-                .address("Istanbul")
-                .birthDate(LocalDate.of(2001, Month.AUGUST,18))
-                .gender("male")
-                .build());
-
-        StudentDTO student2 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
-                .name("Bulut")
-                .address("Bursa")
-                .birthDate( LocalDate.of(1994, Month.MAY,04))
-                .gender("male")
-                .build());
-
-
-
-
-//        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
-//            PermanentInstructor.builder()
-//                    .name("Tolga Ovatman")
-//                    .address("Istanbul")
-//                    .phoneNumber("00212220")
-//                    .fixedSalary(50.00F)));
 //
-//        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
-//                VisitingResearcher.builder()
-//                        .name("Tacettin")
-//                        .address("Istanbul")
-//                        .phoneNumber("051231")
-//                        .hourlySalary(40.00F)));
+//        courseService.deleteAll();
+//        studentService.deleteAll();
+//        instructorService.deleteAll();
+//
+//        StudentDTO student1 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
+//                .name("Harun Murat")
+//                .address("Istanbul")
+//                .birthDate(LocalDate.of(2001, Month.AUGUST,18))
+//                .gender("male")
+//                .build());
+//
+//        StudentDTO student2 = studentMapper.mapFromStudenttoStudentDTO(Student.builder()
+//                .name("Bulut")
+//                .address("Bursa")
+//                .birthDate( LocalDate.of(1994, Month.MAY,04))
+//                .gender("male")
+//                .build());
+//
+//
+//        studentService.save(student1);
+//        studentService.save(student2);
+        /*
+        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
+            PermanentInstructor.builder()
+                    .name("Tolga Ovatman")
+                    .address("Istanbul")
+                    .phoneNumber("00212220")
+                    .fixedSalary(50.00F)));
 
-        CourseDTO course1 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
-                .code("CAL101")
-                .creditScore(3.50F)
-                .name("CALCULUS")
-                .build());
+        instructorService.save(instructorMapper.mapFromInstructortoInstructorDTO(
+                VisitingResearcher.builder()
+                        .name("Tacettin")
+                        .address("Istanbul")
+                        .phoneNumber("051231")
+                        .hourlySalary(40.00F)));
+        */
 
-        CourseDTO course2 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
-                .code("CS101")
-                .creditScore(4.0F)
-                .name("COMPUTER SCIENCE")
-                .build());
-
-        CourseDTO course3 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
-                .code("ENG101")
-                .creditScore(2.0F)
-                .name("ENGLISH")
-                .build());
+//        CourseDTO course1 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
+//                .code("CAL101")
+//                .creditScore(3.50F)
+//                .name("CALCULUS")
+//                .build());
+//
+//        CourseDTO course2 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
+//                .code("CS101")
+//                .creditScore(4.0F)
+//                .name("COMPUTER SCIENCE")
+//                .build());
+//
+//        CourseDTO course3 = courseMapper.mapFromCoursetoCourseDTO(Course.builder()
+//                .code("ENG101")
+//                .creditScore(2.0F)
+//                .name("ENGLISH")
+//                .build());
 
 
 
@@ -112,14 +114,13 @@ public class InitializerRunner implements CommandLineRunner {
 //        Course course1_ = courseMapper.mapFromCourseDTOtoCourse(course1);
 //        student1_.addCourse(course1_);
 
-        studentService.save(student1);
-        studentService.save(student2);
 
-        courseService.save(course1);
-        courseService.save(course2);
-        courseService.save(course3);
-
-        courseService.findAll().forEach(course -> logger.info("{}", course));
+//
+//        courseService.save(course1);
+//        courseService.save(course2);
+//        courseService.save(course3);
+//
+//        courseService.findAll().forEach(course -> logger.info("{}", course));
 
     }
 }

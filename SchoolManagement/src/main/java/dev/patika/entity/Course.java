@@ -37,11 +37,10 @@ public class Course extends AbstractBaseEntity{
         studentList.add(student);
     }
 
-//    @JsonManagedReference
-    @ManyToMany(mappedBy = "courseList", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JsonBackReference
+    @ManyToMany(mappedBy = "courseList", fetch = FetchType.LAZY)
     private Set<Student> studentList;
 
-    @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Instructor instructor;
 

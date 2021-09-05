@@ -29,6 +29,7 @@ public class InstructorDTO {
     @NotBlank
     private String phoneNumber;
 
+    // Would be convert id to Couse Object in mapper
     @ApiModelProperty(example = "[1,2]")
     @NotBlank
     private List<Integer> courseIdList;

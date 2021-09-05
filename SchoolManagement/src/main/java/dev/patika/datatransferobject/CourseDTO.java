@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -33,6 +35,7 @@ public class CourseDTO {
     @NotNull(message = "Course ID is mandatory")
     private int instructorId;
 
-    //instructur id
-    //list
+    @ApiModelProperty(example = "[1,2]")
+    @NotBlank
+    private Set<Integer> studentListId;
 }
