@@ -2,13 +2,51 @@ package dev.patika.mappers;
 
 
 import dev.patika.datatransferobject.PermanentInstructorDTO;
-import dev.patika.datatransferobject.VisitingResearcherDTO;
+import dev.patika.entity.Course;
 import dev.patika.entity.PermanentInstructor;
+import dev.patika.service.CourseService;
+import dev.patika.service.InstructorService;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 
-@Mapper
-public interface PermanentInstructorMapper {
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-    PermanentInstructor mapFromPermanentInstructorDTOtoPermanentInstructor(PermanentInstructorDTO permanentInstructorDTO);
-    PermanentInstructorDTO mapFromPermanentInstructortoPermanentInstructorDTO(PermanentInstructor permanentInstructor);
+@Mapper(componentModel = "spring")
+@RequiredArgsConstructor
+public abstract class PermanentInstructorMapper {
+
+
+    protected CourseService courseService;
+
+    @Autowired
+    public PermanentInstructorMapper(@Lazy CourseService courseService){
+        this.courseService = courseService;
+    }
+
+
+    @Mapping(target = "courseList", expression = "java(getCourseList(permanentInstructorDTO))")
+    public abstract PermanentInstructor mapFromPermanentInstructorDTOtoPermanentInstructor(PermanentInstructorDTO permanentInstructorDTO);
+
+    @Mapping(target = "courseIdList", expression = "java(getCourseIdList(permanentInstructor))")
+    public abstract PermanentInstructorDTO mapFromPermanentInstructortoPermanentInstructorDTO(PermanentInstructor permanentInstructor);
+
+    protected List<Course> getCourseList(PermanentInstructorDTO permanentInstructorDTO){
+
+        List<Course> courses = new ArrayList<>();
+        permanentInstructorDTO.getCourseIdList().iterator().forEachRemaining(permanent_id -> courses.add(courseService.findById(permanent_id)));
+        return courses;
+    }
+
+    protected List<Integer> getCourseIdList(PermanentInstructor permanentInstructor){
+
+        List<Integer> courselists = new ArrayList<>();
+        permanentInstructor.getCourseList().iterator().forEachRemaining(permanent -> courselists.add(permanent.getId()));
+        return courselists;
+    }
 }

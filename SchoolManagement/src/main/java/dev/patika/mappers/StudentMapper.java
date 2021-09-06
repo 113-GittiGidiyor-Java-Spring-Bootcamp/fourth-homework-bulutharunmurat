@@ -5,6 +5,8 @@ import dev.patika.datatransferobject.StudentDTO;
 import dev.patika.entity.Course;
 import dev.patika.entity.Student;
 import dev.patika.service.CourseService;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,16 @@ import java.util.Set;
 
 
 @Mapper(componentModel = "spring")
+@RequiredArgsConstructor
 public abstract class StudentMapper {
 
-    @Autowired
+
     protected CourseService courseService;
+
+    @Autowired
+    public StudentMapper(@Lazy CourseService courseService){
+        this.courseService = courseService;
+    }
 
     @Mapping(target = "courseList", expression = "java(getCourseList(studentDTO))")
     public abstract Student mapFromStudentDTOtoStudent(StudentDTO studentDTO);
