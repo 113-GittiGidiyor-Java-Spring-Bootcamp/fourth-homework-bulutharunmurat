@@ -32,7 +32,11 @@ public abstract class VisitingResearcherMapper {
     @Mapping(target = "courseIdList", expression = "java(getCourseIdList(visitingResearcher))")
     public abstract VisitingResearcherDTO mapFromVisitingResearchertoVisitingResearcherDTO(VisitingResearcher visitingResearcher);
 
-
+    /**
+     *
+     * @param visitingResearcherDTO
+     * @return courseList
+     */
     protected List<Course> getCourseList(VisitingResearcherDTO visitingResearcherDTO){
 
         List<Course> courses = new ArrayList<>();
@@ -40,6 +44,11 @@ public abstract class VisitingResearcherMapper {
         return courses;
     }
 
+    /**
+     *
+     * @param visitingResearcher
+     * @return course'sIdList
+     */
     protected List<Integer> getCourseIdList(VisitingResearcher visitingResearcher){
 
         List<Integer> courselists = new ArrayList<>();

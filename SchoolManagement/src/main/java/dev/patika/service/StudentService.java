@@ -3,10 +3,12 @@ package dev.patika.service;
 
 
 import dev.patika.datatransferobject.StudentDTO;
+import dev.patika.entity.Course;
 import dev.patika.entity.Instructor;
 import dev.patika.entity.Student;
 import dev.patika.exceptions.CourseIsAlreadyExistException;
 import dev.patika.exceptions.StudentAgeNotValidException;
+import dev.patika.exceptions.StudentNumberForOneCourseExceededException;
 import dev.patika.mappers.StudentMapper;
 import dev.patika.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -45,6 +48,11 @@ public class StudentService implements BaseService<Student> {
         return repository.findById(id).get();
     }
 
+    /**
+     *
+     * @param studentDTO
+     * @return repository.save(student)
+     */
     @Transactional
     public Student save(StudentDTO studentDTO) {
 
@@ -58,11 +66,17 @@ public class StudentService implements BaseService<Student> {
 
             throw new StudentAgeNotValidException("Student Age should be between 18 and 40!");
         }
+
+        studentNumberOfCourse(studentDTO);
         Student student = studentMapper.mapFromStudentDTOtoStudent(studentDTO);
         return repository.save(student);
     }
 
-//    @Override
+    /**
+     *
+     * @param studentDTO
+     * @return repository.save(student)
+     */
     @Transactional
     public Student update(StudentDTO studentDTO) {
         Student student = studentMapper.mapFromStudentDTOtoStudent(studentDTO);
@@ -103,6 +117,21 @@ public class StudentService implements BaseService<Student> {
     @Transactional
     public void deleteAll(){
         repository.deleteAll();
+    }
+
+    /**
+     *
+     * @param studentDTO
+     */
+    public void studentNumberOfCourse(StudentDTO studentDTO){
+
+        Set<Course> courseListofStudent = studentMapper.getCourseList(studentDTO);
+
+        courseListofStudent.forEach(
+                course -> {if (course.getStudentList().size() > 20){
+                    throw new StudentNumberForOneCourseExceededException("Maximum allowed student for any course cannot exceed 20");
+                }}
+        );
     }
 
 }

@@ -2,8 +2,10 @@ package dev.patika.service;
 
 
 import dev.patika.datatransferobject.CourseDTO;
+import dev.patika.datatransferobject.StudentDTO;
 import dev.patika.entity.Course;
 import dev.patika.entity.Log;
+import dev.patika.exceptions.StudentNumberForOneCourseExceededException;
 import dev.patika.repository.LogRepository;
 import dev.patika.service.LogService;
 import dev.patika.exceptions.CourseIsAlreadyExistException;
@@ -23,6 +25,7 @@ import org.apache.log4j.Logger;
 //import org.slf4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -51,7 +54,11 @@ public class CourseService implements BaseService<Course> {
         return repository.findById(id).get();
     }
 
-
+    /**
+     *
+     * @param courseDTO
+     * @return repository.save(course)
+     */
     @Transactional
     public Course save(CourseDTO courseDTO) {
         boolean isExist = repository.selectExistsCode(courseDTO.getCode());
@@ -71,6 +78,8 @@ public class CourseService implements BaseService<Course> {
 
             throw new CourseIsAlreadyExistException("Course with Code : " + courseDTO.getCode() + " is already exists!");
         }
+
+        studentNumberOfCourse(courseDTO);
         Course course = courseMapper.mapFromCourseDTOtoCourse(courseDTO);
         return repository.save(course);
     }
@@ -89,9 +98,15 @@ public class CourseService implements BaseService<Course> {
         repository.deleteById(id);
     }
 
+    /**
+     *
+     * @param name
+     * @return courseList
+     */
     public List<Course> findByNameContaining(String name) {
         return repository.findByNameContaining(name);
     }
+
 
     @Transactional
     public void deleteByName(String name){
@@ -101,5 +116,17 @@ public class CourseService implements BaseService<Course> {
     @Transactional
     public void deleteAll(){
         repository.deleteAll();
+    }
+
+    /**
+     *
+     * @param courseDTO
+     */
+    public void studentNumberOfCourse(CourseDTO courseDTO){
+
+        Course course = courseMapper.mapFromCourseDTOtoCourse(courseDTO);
+        if (course.getStudentList().size() > 20) {
+            throw new StudentNumberForOneCourseExceededException("Maximum allowed student for any course cannot exceed 20");
+        }
     }
 }

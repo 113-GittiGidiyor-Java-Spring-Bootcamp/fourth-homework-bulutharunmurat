@@ -15,10 +15,7 @@ import org.springframework.context.annotation.Primary;
 public interface InstructorMapper {
 
 
-    // target = mapping to course in course entity, expression = converting id to course object
-//    @Mapping(target = "courseList", expression = "java(walletService.findCustomerById(walletDTO.getCustomerId()))")
     public abstract Instructor mapFromInstructorDTOtoInstructor(InstructorDTO instructorDTO);
     public abstract InstructorDTO mapFromInstructortoInstructorDTO(Instructor instructor);
 
-//    protected Set<Integer> getCourseId()
 }

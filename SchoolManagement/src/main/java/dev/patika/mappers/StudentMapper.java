@@ -34,13 +34,23 @@ public abstract class StudentMapper {
     @Mapping(target = "courseListId", expression = "java(getCourseListId(student))")
     public abstract StudentDTO mapFromStudenttoStudentDTO(Student student);
 
-    protected Set<Course> getCourseList(StudentDTO studentDTO){
+    /**
+     *
+     * @param studentDTO
+     * @return courseList
+     */
+    public Set<Course> getCourseList(StudentDTO studentDTO){
 
         Set<Course> courses = new HashSet<>();
         studentDTO.getCourseListId().iterator().forEachRemaining(course_id -> courses.add(courseService.findById(course_id)));
         return courses;
     }
 
+    /**
+     *
+     * @param student
+     * @return course'sIdList
+     */
     protected Set<Integer> getCourseListId(Student student){
 
         Set<Integer> courseListId = new HashSet<>();

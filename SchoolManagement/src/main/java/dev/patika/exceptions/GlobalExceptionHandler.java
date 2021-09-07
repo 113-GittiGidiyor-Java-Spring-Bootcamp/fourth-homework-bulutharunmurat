@@ -31,6 +31,13 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler({StudentNumberForOneCourseExceededException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<SchoolManagementErrorResponse> handleException(StudentNumberForOneCourseExceededException exc){
+        SchoolManagementErrorResponse response = prepareErrorResponse(HttpStatus.BAD_REQUEST, exc.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
     private SchoolManagementErrorResponse prepareErrorResponse(HttpStatus httpStatus, String message) {
         SchoolManagementErrorResponse response = new SchoolManagementErrorResponse();
         response.setStatus(httpStatus.value());

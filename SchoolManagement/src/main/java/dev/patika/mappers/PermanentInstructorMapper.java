@@ -36,6 +36,11 @@ public abstract class PermanentInstructorMapper {
     @Mapping(target = "courseIdList", expression = "java(getCourseIdList(permanentInstructor))")
     public abstract PermanentInstructorDTO mapFromPermanentInstructortoPermanentInstructorDTO(PermanentInstructor permanentInstructor);
 
+    /**
+     *
+     * @param permanentInstructorDTO
+     * @return courseList
+     */
     protected List<Course> getCourseList(PermanentInstructorDTO permanentInstructorDTO){
 
         List<Course> courses = new ArrayList<>();
@@ -43,6 +48,11 @@ public abstract class PermanentInstructorMapper {
         return courses;
     }
 
+    /**
+     *
+     * @param permanentInstructor
+     * @return course'sIdList
+     */
     protected List<Integer> getCourseIdList(PermanentInstructor permanentInstructor){
 
         List<Integer> courselists = new ArrayList<>();
